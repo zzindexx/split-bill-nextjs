@@ -1,0 +1,9 @@
+.participant-block:hover .remove-participant {
+    display: inline-block;
+}
+
+.remove-participant {
+    cursor: pointer;
+    color: rgba(255,0,0);
+    display: none;
+}

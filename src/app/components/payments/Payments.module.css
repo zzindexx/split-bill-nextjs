@@ -1,0 +1,17 @@
+.payment-block:hover .remove-payment {
+    display: inline-block;
+}
+
+.payment-block:hover .edit-payment {
+    display: inline-block;
+}
+
+.remove-payment {
+    cursor: pointer;
+    display: none;
+}
+
+.edit-payment {
+    cursor: pointer;
+    display: none;
+}
