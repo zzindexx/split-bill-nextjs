@@ -1,6 +1,6 @@
 import React from 'react';
-import { initializeData } from '../store/actions';
-import { appReducer, initialState, SplitBillDispatchContext, SplitBillSaveDataContext, SplitBillSaveDataDispatchContext, SplitBillStateContext } from '../store/reducer';
+import { initializeData, setSaveData } from '../store/actions';
+import { appReducer, appStateReducer, initialAppState, initialState, SplitBillApplicationDispatchContext, SplitBillApplicationStateContext, SplitBillDispatchContext, SplitBillStateContext } from '../store/reducer';
 import Calculation from './components/calculation/Calculation';
 import Menu from './components/menu/Menu';
 import Participants from './components/participants/Participants';
@@ -22,12 +22,12 @@ const App: React.FC<{ data?: string }> = ({ data }) => {
   }
 
   const [state, dispatch] = React.useReducer(appReducer, currentState);
-  const [saveData, setSaveData] = React.useState(true);
+  const [appState, dispatchApp] = React.useReducer(appStateReducer, initialAppState);
 
   React.useEffect(() => {
     const saveDataString = localStorage.getItem("splitbill-savedata");
     if (saveDataString) {
-      setSaveData(JSON.parse(saveDataString));
+      dispatchApp(setSaveData(JSON.parse(saveDataString)));
     }
 
     const stateString = localStorage.getItem("splitbill-data");
@@ -37,11 +37,11 @@ const App: React.FC<{ data?: string }> = ({ data }) => {
   }, []);
 
   React.useEffect(() => {
-    localStorage.setItem("splitbill-savedata", JSON.stringify(saveData));
-    if (saveData && JSON.stringify(state) !== JSON.stringify(initialState)) {
+    localStorage.setItem("splitbill-savedata", JSON.stringify(appState.saveData));
+    if (appState.saveData && JSON.stringify(state) !== JSON.stringify(initialState)) {
       localStorage.setItem("splitbill-data", JSON.stringify(state));
     }
-  }, [saveData, state]);
+  }, [appState, state]);
 
   let pageTitle = 'Split the bill';
   let total = 0;
@@ -66,8 +66,8 @@ const App: React.FC<{ data?: string }> = ({ data }) => {
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"></link>
       </Head>
 
-      <SplitBillSaveDataContext.Provider value={saveData}>
-        <SplitBillSaveDataDispatchContext.Provider value={setSaveData}>
+      <SplitBillApplicationStateContext.Provider value={appState}>
+        <SplitBillApplicationDispatchContext.Provider value={dispatchApp}>
           <Menu />
           <SplitBillStateContext.Provider value={state}>
             <ShareDialog />
@@ -85,8 +85,8 @@ const App: React.FC<{ data?: string }> = ({ data }) => {
               </div>
             </SplitBillDispatchContext.Provider>
           </SplitBillStateContext.Provider>
-        </SplitBillSaveDataDispatchContext.Provider>
-      </SplitBillSaveDataContext.Provider>
+        </SplitBillApplicationDispatchContext.Provider>
+      </SplitBillApplicationStateContext.Provider>
     </div>
   )
 };

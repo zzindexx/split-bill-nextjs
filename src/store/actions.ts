@@ -81,3 +81,49 @@ export const initializeData = (state: SplitBillState): InitializeData => ({
 });
 
 export type SplitBillActions = AddParticipant | AddPayment | RemoveParticipant | RemovePayment | RemoveParticipantFromPayments | UpdatePayment | InitializeData;
+
+
+export enum StateActions {
+    SetSaveData,
+    SetShowParticipantDialog,
+    SetShowParticipantErrorDialog,
+    SetShowPaymentDialog
+}
+
+export interface SetSaveData {
+    type: StateActions.SetSaveData,
+    payload: boolean
+}
+export interface SetShowParticipantDialog {
+    type: StateActions.SetShowParticipantDialog,
+    payload: boolean
+}
+export interface SetShowParticipantErrorDialog {
+    type: StateActions.SetShowParticipantErrorDialog,
+    payload: boolean
+}
+
+export interface SetShowPaymentDialog {
+    type: StateActions.SetShowPaymentDialog,
+    payload: boolean
+}
+
+export const setSaveData = (enabled: boolean): SetSaveData => ({
+    type: StateActions.SetSaveData,
+    payload: enabled
+});
+export const setShowParticipantDialog = (enabled: boolean): SetShowParticipantDialog => ({
+    type: StateActions.SetShowParticipantDialog,
+    payload: enabled
+});
+export const setShowParticipantErrorDialog = (enabled: boolean): SetShowParticipantErrorDialog => ({
+    type: StateActions.SetShowParticipantErrorDialog,
+    payload: enabled
+});
+
+export const setShowPaymentDialog = (enabled: boolean): SetShowPaymentDialog => ({
+    type: StateActions.SetShowPaymentDialog,
+    payload: enabled
+});
+
+export type AppActions = SetSaveData | SetShowParticipantDialog | SetShowParticipantErrorDialog | SetShowPaymentDialog;

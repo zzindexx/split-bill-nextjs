@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { addPayment, updatePayment } from '../../../store/actions';
-import { SplitBillDispatchContext, SplitBillStateContext } from '../../../store/reducer';
+import { addPayment, setShowPaymentDialog, updatePayment } from '../../../store/actions';
+import { SplitBillApplicationDispatchContext, SplitBillApplicationStateContext, SplitBillDispatchContext, SplitBillStateContext } from '../../../store/reducer';
 import { Participant, Payment } from '../../../store/types';
 import CurrencyInput from 'react-currency-input-field';
 
@@ -12,6 +12,8 @@ export interface AddPaymentProps {
 export const AddPayment: React.FC<AddPaymentProps> = (props: AddPaymentProps) => {
     const { payments, participants } = React.useContext(SplitBillStateContext);
     const dispatch = React.useContext(SplitBillDispatchContext);
+    const dispatchApp = React.useContext(SplitBillApplicationDispatchContext);
+    const appState = React.useContext(SplitBillApplicationStateContext);
     let dlgTitle = "Add payment";
 
     const [subject, setSubject] = useState<string>("");
@@ -42,62 +44,67 @@ export const AddPayment: React.FC<AddPaymentProps> = (props: AddPaymentProps) =>
 
     }, [props.payment, participants]);
 
-    const clearData = () => {
+    const closeDialog = (saveData: boolean) => {
+        if (saveData) {
+            if (props.payment) {
+                dispatch(
+                    updatePayment({
+                        id: props.payment.id,
+                        name: subject,
+                        sum: price,
+                        paidById: whoPaid,
+                        splitByIds: splitBy
+                    }));
+            } else {
+                dispatch(
+                    addPayment({
+                        id: -1,
+                        name: subject,
+                        sum: price,
+                        paidById: whoPaid,
+                        splitByIds: splitBy
+                    })
+                );
+            }
+        }
+
+
         setSubject("");
         setPrice(0);
         setPriceStr("0")
         setWhoPaid(participants[0].id);
         setSplitBy(participants.map(p => p.id));
-    }
 
-    const processPayment = () => {
-        if (props.payment) {
-            dispatch(
-                updatePayment({
-                    id: props.payment.id,
-                    name: subject,
-                    sum: price,
-                    paidById: whoPaid,
-                    splitByIds: splitBy
-                }));
-        } else {
-            dispatch(
-                addPayment({
-                    id: -1,
-                    name: subject,
-                    sum: price,
-                    paidById: whoPaid,
-                    splitByIds: splitBy
-                })
-            );
-        }
-        clearData();
         if (props.onClose) {
             props.onClose();
         }
+
+        dispatchApp(setShowPaymentDialog(false));
     }
 
     function handleFormSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        processPayment();
+        closeDialog(true);
     }
+
+    if (appState.showPaymentAddDialog === false) return null;
 
     return <React.Fragment>
 
-        <div className="modal fade" id="dlg_addEditPayment">
-            <div className="modal-dialog">
+        <div className="modal" tabIndex={-1} role="dialog" style={{ display: 'block' }}>
+            <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title">{dlgTitle}</h5>
-                        <span className="dlg-close-button" onClick={(e) => clearData()}>
-                            <i className="bi bi-x-circle" data-bs-dismiss="modal"></i>
+                        <span className="dlg-close-button" onClick={(e) => closeDialog(false)}>
+                            <i className="bi bi-x-circle"></i>
                         </span>
                     </div>
                     <div className="modal-body">
                         <form id="addEditPaymentForm" onSubmit={handleFormSubmit}>
                             <div className="mb-2">
                                 <label htmlFor="txtSubject" className="form-label">What were you paying for?</label>
-                                <input type="text" className="form-control" id="txtSubject" value={subject} onChange={(e) => setSubject(e.target.value)} />
+                                <input type="text" className="form-control" id="txtSubject" value={subject} onChange={(e) => setSubject(e.target.value)} autoFocus={true}/>
                             </div>
 
                             <div className="mb-2">
@@ -140,12 +147,13 @@ export const AddPayment: React.FC<AddPaymentProps> = (props: AddPaymentProps) =>
                             </div>
                         </form>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={(e) => clearData()}>Close</button>
-                            <button type="submit" form="addEditPaymentForm" className="btn btn-purple" data-bs-dismiss="modal" onClick={() => processPayment()}>{btnText}</button>
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={(e) => closeDialog(false)}>Close</button>
+                            <button type="submit" form="addEditPaymentForm" className="btn btn-purple" data-bs-dismiss="modal" onClick={() => closeDialog(true)}>{btnText}</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div className="modal-backdrop fade show"></div>
     </React.Fragment>;
 }

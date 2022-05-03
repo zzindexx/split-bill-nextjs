@@ -15,3 +15,10 @@ export interface SplitBillState {
     participants: Participant[];
     payments: Payment[];
 }
+
+export interface ApplicationState {
+    saveData: boolean;
+    showParticipantAddDialog: boolean;
+    showParticipantErrorDialog: boolean;
+    showPaymentAddDialog: boolean;
+}

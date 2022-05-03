@@ -1,13 +1,16 @@
 import * as React from 'react';
-import { removeParticipant } from '../../../store/actions';
-import { SplitBillDispatchContext, SplitBillStateContext } from '../../../store/reducer';
+import { removeParticipant, setShowParticipantDialog, setShowParticipantErrorDialog } from '../../../store/actions';
+import { SplitBillApplicationDispatchContext, SplitBillDispatchContext, SplitBillStateContext } from '../../../store/reducer';
 import { Participant } from '../../../store/types';
-import { AddParticipant, ParticipantRemoveError } from './AddParticipant';
+import { AddParticipant } from './AddParticipant';
 import styles from './Participants.module.css';
+import { ParticipantRemoveError } from './RemoveParticipantError';
 
 const Participants: React.FC = () => {
     const state = React.useContext(SplitBillStateContext);
     const dispatch = React.useContext(SplitBillDispatchContext);
+
+    const dispatchApp = React.useContext(SplitBillApplicationDispatchContext);
 
     return <React.Fragment>
         <div className="card rounded-3 mb-4">
@@ -23,7 +26,7 @@ const Participants: React.FC = () => {
                         const removeParticipantButton: JSX.Element =
                             state.payments.filter(payment => payment.paidById === p.id || payment.splitByIds.includes(p.id)).length === 0 ?
                                 <i className="bi bi-trash-fill ml-3" onClick={() => dispatch(removeParticipant(p.id))}></i> :
-                                <i className="bi bi-trash-fill ml-3" data-bs-toggle="modal" data-bs-target="#dlg_removeParticipantError"></i>;
+                                <i className="bi bi-trash-fill ml-3" onClick={() => dispatchApp(setShowParticipantErrorDialog(true))}></i>;
 
                         return <li key={p.id} className={`list-group-item ${styles["participant-block"]} d-flex justify-content-between`}>
                             <span>
@@ -40,7 +43,7 @@ const Participants: React.FC = () => {
 
             </div>
             <div className="card-body card-body d-flex justify-content-end" style={{ paddingTop: '0px', paddingBottom: '10px' }}>
-                <button className={`btn btn-outline-purple`} type="button" data-bs-toggle="modal" data-bs-target="#dlg_addParticipant">+ Add</button>
+                <button className={`btn btn-outline-purple`} type="button" onClick={() => dispatchApp(setShowParticipantDialog(true))}>+ Add</button>
             </div>
         </div>
         <AddParticipant />

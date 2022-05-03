@@ -1,17 +1,23 @@
 import React from "react";
-import { Actions, SplitBillActions } from "./actions";
-import { Participant, Payment, SplitBillState } from "./types";
+import { Actions, AppActions, SplitBillActions, StateActions } from "./actions";
+import { ApplicationState, Participant, Payment, SplitBillState } from "./types";
 
 export const initialState: SplitBillState = {
     participants: [],
     payments: []
 }
 
+export const initialAppState: ApplicationState = {
+    saveData: true,
+    showParticipantAddDialog: false,
+    showParticipantErrorDialog: false,
+    showPaymentAddDialog: false
+}
+
 export const appReducer = (state: SplitBillState, action: SplitBillActions): SplitBillState => {
     switch (action.type) {
         case Actions.InitializeData:
             return action.payload;
-            break;
         case Actions.AddParticipant:
             return {
                 payments: state.payments,
@@ -80,8 +86,35 @@ export const appReducer = (state: SplitBillState, action: SplitBillActions): Spl
     }
 }
 
+export const appStateReducer = (state: ApplicationState, action: AppActions): ApplicationState => {
+    switch (action.type) {
+        case StateActions.SetSaveData:
+            return {
+                ...state,
+                saveData: action.payload,
+            };
+        case StateActions.SetShowParticipantDialog:
+            return {
+                ...state,
+                showParticipantAddDialog: action.payload
+            };
+        case StateActions.SetShowParticipantErrorDialog:
+            return {
+                ...state,
+                showParticipantErrorDialog: action.payload
+            };
+        case StateActions.SetShowPaymentDialog:
+            return {
+                ...state,
+                showPaymentAddDialog: action.payload
+            };
+        default:
+            return state;
+    }
+}
+
 export const SplitBillStateContext = React.createContext<SplitBillState>(initialState);
 export const SplitBillDispatchContext = React.createContext<React.Dispatch<SplitBillActions>>(() => undefined);
 
-export const SplitBillSaveDataContext = React.createContext<boolean>(true);
-export const SplitBillSaveDataDispatchContext = React.createContext<React.Dispatch<boolean>>(() => undefined);
+export const SplitBillApplicationStateContext = React.createContext<ApplicationState>(initialAppState);
+export const SplitBillApplicationDispatchContext = React.createContext<React.Dispatch<AppActions>>(() => undefined);

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { removePayment } from '../../../store/actions';
-import { SplitBillDispatchContext, SplitBillStateContext } from '../../../store/reducer';
+import { removePayment, setShowPaymentDialog } from '../../../store/actions';
+import { SplitBillApplicationDispatchContext, SplitBillDispatchContext, SplitBillStateContext } from '../../../store/reducer';
 import { Payment } from '../../../store/types';
 import { formattedValue } from '../../helpers/formattedValue';
 import { AddPayment } from './AddPayments';
@@ -9,6 +9,7 @@ import styles from './Payments.module.css';
 const Payments: React.FC = () => {
     const state = React.useContext(SplitBillStateContext);
     const dispatch = React.useContext(SplitBillDispatchContext);
+    const dispatchApp = React.useContext(SplitBillApplicationDispatchContext);
 
     const [editingPayment, seteditingPayment] = React.useState<Payment | null>(null)
 
@@ -35,7 +36,10 @@ const Payments: React.FC = () => {
                                 </small>
                                 <span>
                                     <span className={`${styles["edit-payment"]} text-primary`}>
-                                        <i className="bi bi-pen-fill me-3 edit-payment" onClick={() => seteditingPayment(payment)} data-bs-toggle="modal" data-bs-target="#dlg_addEditPayment"></i>
+                                        <i className="bi bi-pen-fill me-3 edit-payment" onClick={() => {
+                                            seteditingPayment(payment);
+                                            dispatchApp(setShowPaymentDialog(true));
+                                        }}></i>
                                     </span>
                                     <span className={`${styles["remove-payment"]} text-danger`}>
                                         <i className="bi bi-trash-fill remove-payment" onClick={() => dispatch(removePayment(payment.id))}></i>
@@ -47,7 +51,7 @@ const Payments: React.FC = () => {
                 </ul>
             </div>
             <div className="card-body d-flex justify-content-end" style={{ paddingTop: '0px', paddingBottom: '10px' }}>
-                <button className={`btn btn-outline-purple`} type="button" data-bs-toggle="modal" data-bs-target="#dlg_addEditPayment">+ Add</button>
+                <button className={`btn btn-outline-purple`} type="button" onClick={() => dispatchApp(setShowPaymentDialog(true))}>+ Add</button>
             </div>
         </div>
         {editingPayment ? <AddPayment payment={editingPayment} onClose={() => seteditingPayment(null)} /> : <AddPayment />}
