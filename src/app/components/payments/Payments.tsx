@@ -14,9 +14,9 @@ const Payments: React.FC = () => {
     const [editingPayment, seteditingPayment] = React.useState<Payment | null>(null)
 
     return <React.Fragment>
-        <div className="card rounded-3 mb-4">
+        <div className="card border-left-info shadow py-2 mb-2">
             <div className="card-body">
-                <h5 className="card-title">
+                <h5 className="card-title card-title-info">
                     Payments
                 </h5>
                 <ul className="list-group list-group-flush">
@@ -51,7 +51,7 @@ const Payments: React.FC = () => {
                 </ul>
             </div>
             <div className="card-body d-flex justify-content-end" style={{ paddingTop: '0px', paddingBottom: '10px' }}>
-                <button className={`btn btn-outline-purple`} type="button" onClick={() => dispatchApp(setShowPaymentDialog(true))}>+ Add</button>
+                <button className="btn btn-outline-info" type="button" onClick={() => dispatchApp(setShowPaymentDialog(true))}>+ Add</button>
             </div>
         </div>
         {editingPayment ? <AddPayment payment={editingPayment} onClose={() => seteditingPayment(null)} /> : <AddPayment />}

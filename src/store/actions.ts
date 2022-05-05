@@ -87,7 +87,8 @@ export enum StateActions {
     SetSaveData,
     SetShowParticipantDialog,
     SetShowParticipantErrorDialog,
-    SetShowPaymentDialog
+    SetShowPaymentDialog,
+    SetShowShareDialog
 }
 
 export interface SetSaveData {
@@ -105,6 +106,11 @@ export interface SetShowParticipantErrorDialog {
 
 export interface SetShowPaymentDialog {
     type: StateActions.SetShowPaymentDialog,
+    payload: boolean
+}
+
+export interface SetShowShareDialog {
+    type: StateActions.SetShowShareDialog,
     payload: boolean
 }
 
@@ -126,4 +132,9 @@ export const setShowPaymentDialog = (enabled: boolean): SetShowPaymentDialog => 
     payload: enabled
 });
 
-export type AppActions = SetSaveData | SetShowParticipantDialog | SetShowParticipantErrorDialog | SetShowPaymentDialog;
+export const setShowShareDialog = (enabled: boolean): SetShowShareDialog => ({
+    type: StateActions.SetShowShareDialog,
+    payload: enabled
+});
+
+export type AppActions = SetSaveData | SetShowParticipantDialog | SetShowParticipantErrorDialog | SetShowPaymentDialog | SetShowShareDialog;

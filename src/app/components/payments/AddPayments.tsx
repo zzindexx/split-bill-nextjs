@@ -148,7 +148,7 @@ export const AddPayment: React.FC<AddPaymentProps> = (props: AddPaymentProps) =>
                         </form>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={(e) => closeDialog(false)}>Close</button>
-                            <button type="submit" form="addEditPaymentForm" className="btn btn-purple" data-bs-dismiss="modal" onClick={() => closeDialog(true)}>{btnText}</button>
+                            <button type="submit" form="addEditPaymentForm" className="btn btn-info" data-bs-dismiss="modal" onClick={() => closeDialog(true)}>{btnText}</button>
                         </div>
                     </div>
                 </div>

@@ -13,11 +13,12 @@ const Participants: React.FC = () => {
     const dispatchApp = React.useContext(SplitBillApplicationDispatchContext);
 
     return <React.Fragment>
-        <div className="card rounded-3 mb-4">
+        <div className="card border-left-primary shadow py-2 mb-2">
             <div className="card-body">
-                <h5 className="card-title">
+                <h5 className="card-title card-title-primary">
                     Participants
                 </h5>
+
                 {state.participants.length === 0 && <div className="fw-light fst-italic text-center">
                     Start by adding some participants
                 </div>}
@@ -43,7 +44,7 @@ const Participants: React.FC = () => {
 
             </div>
             <div className="card-body card-body d-flex justify-content-end" style={{ paddingTop: '0px', paddingBottom: '10px' }}>
-                <button className={`btn btn-outline-purple`} type="button" onClick={() => dispatchApp(setShowParticipantDialog(true))}>+ Add</button>
+                <button className={`btn btn-outline-primary`} type="button" onClick={() => dispatchApp(setShowParticipantDialog(true))}>+ Add</button>
             </div>
         </div>
         <AddParticipant />

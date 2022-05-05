@@ -5,7 +5,7 @@ import { formattedValue } from '../../helpers/formattedValue';
 import { Card } from '../../shared/Card';
 import { Graph } from '../../shared/Graph';
 
-export const TotalSpent: React.FC = () => {
+export const TotalSpentGraph: React.FC = () => {
     const { payments, participants } = React.useContext(SplitBillStateContext);
 
     let totalSpentAmmount: number = 0;
@@ -23,26 +23,6 @@ export const TotalSpent: React.FC = () => {
 
 
     return <Card title="Total paid">
-                <table className='table'>
-                    <thead>
-                        <tr>
-                            <th>Participant</th>
-                            <th className='text-end'>Total paid</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {totalSpent.map((spentRow) => <tr key={spentRow.participant.id}>
-                            <td>
-                                {spentRow.participant.name}
-                            </td>
-                            <td className='text-end'>{formattedValue(spentRow.totalSpent)}</td>
-                        </tr>
-                        )}
-                        <tr>
-                            <th scope='row'>Total:</th>
-                            <th scope='row' className='text-end'>{formattedValue(totalSpentAmmount)}</th>
-                        </tr>
-                    </tbody>
-                </table>
+        <Graph id="totalSpentGraph" data={totalSpent} />
     </Card>
 }

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
-import { setSaveData } from '../../../store/actions';
+import { setSaveData, setShowShareDialog } from '../../../store/actions';
 import { SplitBillApplicationDispatchContext, SplitBillApplicationStateContext } from '../../../store/reducer';
 import styles from './../../../../styles/Menu.module.css';
 
@@ -8,7 +8,7 @@ const Menu: React.FC = () => {
     const appState = React.useContext(SplitBillApplicationStateContext);
     const appDispatch = React.useContext(SplitBillApplicationDispatchContext);
 
-    return <nav className={`navbar navbar-expand-lg navbar-light p-3 ${styles.topnavbar}`}>
+    return <nav className="navbar navbar-expand-lg navbar-light bg-white shadow pt-3 pb-4">
         <div className="container">
             <Link href="/">
                 <a style={{ textDecoration: 'none' }}>
@@ -37,7 +37,7 @@ const Menu: React.FC = () => {
             </div>
 
             
-            <button className={`btn btn-purple ${styles["btn-share"]}`} type="submit" data-bs-toggle="modal" data-bs-target="#dlg_Share"><i className="bi bi-share-fill"></i></button>
+            <button className={`btn btn-primary ${styles["btn-share"]}`} onClick={() => appDispatch(setShowShareDialog(true))}><i className="bi bi-share-fill"></i></button>
 
         </div>
     </nav>;

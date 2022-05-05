@@ -42,7 +42,7 @@ export const AddParticipant: React.FC = () => {
                         </form>
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary" onClick={(e) => closeDialog(false)}>Close</button>
-                            <button type="submit" form="addEditParticipantForm" className="btn btn-purple" onClick={() => closeDialog(true)}>Add participant</button>
+                            <button type="submit" form="addEditParticipantForm" className="btn btn-primary" onClick={() => closeDialog(true)}>Add participant</button>
                         </div>
                     </div>
                 </div>

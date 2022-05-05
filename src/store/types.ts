@@ -21,4 +21,5 @@ export interface ApplicationState {
     showParticipantAddDialog: boolean;
     showParticipantErrorDialog: boolean;
     showPaymentAddDialog: boolean;
+    showShareDialog: boolean;
 }

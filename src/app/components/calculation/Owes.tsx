@@ -2,6 +2,7 @@ import React from 'react';
 import { SplitBillStateContext } from '../../../store/reducer';
 import { Participant } from '../../../store/types';
 import { formattedValue } from '../../helpers/formattedValue';
+import { Card } from '../../shared/Card';
 
 export const Owes: React.FC = () => {
     const { participants, payments } = React.useContext(SplitBillStateContext);
@@ -19,10 +20,7 @@ export const Owes: React.FC = () => {
         };
     });
 
-    return <React.Fragment>
-        <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mb-3 border-bottom">
-            <h5>Total owes</h5>
-        </div>
+    return <Card title={"Total owes"}>
         {
             totalOwes.filter(p => p.payments.length > 0).map(to => <div key={to.participant.id} className="payment-block">
                 <div className="d-flex w-100 justify-content-between mt-3">
@@ -39,5 +37,5 @@ export const Owes: React.FC = () => {
             </div>
             )
         }
-    </React.Fragment>
+    </Card>;
 }

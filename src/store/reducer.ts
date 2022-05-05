@@ -11,7 +11,8 @@ export const initialAppState: ApplicationState = {
     saveData: true,
     showParticipantAddDialog: false,
     showParticipantErrorDialog: false,
-    showPaymentAddDialog: false
+    showPaymentAddDialog: false,
+    showShareDialog: false
 }
 
 export const appReducer = (state: SplitBillState, action: SplitBillActions): SplitBillState => {
@@ -107,6 +108,11 @@ export const appStateReducer = (state: ApplicationState, action: AppActions): Ap
             return {
                 ...state,
                 showPaymentAddDialog: action.payload
+            };
+        case StateActions.SetShowShareDialog:
+            return {
+                ...state,
+                showShareDialog: action.payload
             };
         default:
             return state;
