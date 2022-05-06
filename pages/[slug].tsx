@@ -1,4 +1,5 @@
 import { AzureNamedKeyCredential, TableClient } from '@azure/data-tables'
+import { createDecipheriv } from 'crypto'
 import type { GetServerSideProps, NextPage } from 'next'
 import { redirect } from 'next/dist/server/api-utils'
 import React from 'react'
@@ -19,11 +20,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         const client = new TableClient(`https://${account}.table.core.windows.net`,`${tableName}`, sharedKeyCredential);
     
         const entity = await client.getEntity("1", slug).catch(() => console.log("Entity not found"));
-        console.log(entity);
         if (entity) {
+            const key: string = process.env.ENCRPTION_KEY as string;
+            const iv: string = process.env.ENCRPTION_IV as string;
+            const cypher = createDecipheriv('aes256', key, iv);
+            const decryptedData = cypher.update(entity.data as string, 'hex', 'utf-8') + cypher.final('utf-8');
             return {
                 props: {
-                    data: entity.data
+                    data: decryptedData
                 }
             }
         }

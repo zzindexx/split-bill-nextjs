@@ -11,8 +11,8 @@
 }
 
 .switch:checked {
-    background-color: #354497;
-    border-color: #354497;
+    background-color: #4e73df;
+    border-color: #4e73df;
 }
 .dropdown-menu {
     min-width: 11.5rem;
