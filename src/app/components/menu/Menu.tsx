@@ -1,10 +1,13 @@
+import { nanoid } from 'nanoid';
 import Link from 'next/link';
 import React from 'react';
 import { setSaveData, setShowShareDialog } from '../../../store/actions';
-import { SplitBillApplicationDispatchContext, SplitBillApplicationStateContext } from '../../../store/reducer';
+import { SplitBillApplicationDispatchContext, SplitBillApplicationStateContext, SplitBillStateContext } from '../../../store/reducer';
 import styles from './../../../../styles/Menu.module.css';
+import { Share } from './Share';
 
 const Menu: React.FC = () => {
+    const state = React.useContext(SplitBillStateContext);
     const appState = React.useContext(SplitBillApplicationStateContext);
     const appDispatch = React.useContext(SplitBillApplicationDispatchContext);
 
@@ -37,7 +40,7 @@ const Menu: React.FC = () => {
             </div>
 
             
-            <button className={`btn btn-primary ${styles["btn-share"]}`} onClick={() => appDispatch(setShowShareDialog(true))}><i className="bi bi-share-fill"></i></button>
+            <Share />
 
         </div>
     </nav>;
